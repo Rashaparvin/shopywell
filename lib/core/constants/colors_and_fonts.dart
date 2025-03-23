@@ -5,6 +5,7 @@ class Pallete {
   // Common colors
   static const Color kWhiteColor = Colors.white;
   static const Color kRedColor = Colors.red;
+  static const Color kBlackColor = Colors.black;
 
   // Text colors
   static const Color kTextRedColor = Colors.red;
@@ -14,8 +15,8 @@ class Pallete {
 }
 
 // Font Families
-class PoppinsFonts {
-  String kMontserratBold = 'MontserratBold';
-  String kMontserratNormal = 'MontserratNormal';
-  String kMontserratLight = 'MontserratLight';
+class Fonts {
+  static const String kMontserratBold = 'MontserratBold';
+  static const String kMontserratNormal = 'MontserratNormal';
+  static const String kMontserratLight = 'MontserratLight';
 }

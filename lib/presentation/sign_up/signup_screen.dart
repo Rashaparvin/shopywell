@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/core/strings/image_strings.dart';
-import 'package:shopywell/presentation/login/forgot_pswd.dart';
-import 'package:shopywell/presentation/sign_up/signup_screen.dart';
+import 'package:shopywell/presentation/login/login_screen.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
 import 'package:shopywell/presentation/widgets/social_button.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     TextEditingController username = TextEditingController();
     TextEditingController password = TextEditingController();
+    TextEditingController confirmPswd = TextEditingController();
 
     return Scaffold(
       backgroundColor: Pallete.kWhiteColor,
@@ -26,14 +26,14 @@ class LoginScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Welcome',
+                    'Create an',
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
                         fontFamily: Fonts.kMontserratBold),
                   ),
                   Text(
-                    'Back!',
+                    'account',
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.bold,
@@ -91,22 +91,55 @@ class LoginScreen extends StatelessWidget {
                   contentPadding: const EdgeInsets.all(12),
                 ),
               ),
-              kSizedBoxHeight(height: 5),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ForgotPswdScreen()));
-                  },
-                  child: Text(
-                    'Forgot Password?',
-                    textAlign: TextAlign.right,
-                    style:
-                        TextStyle(fontSize: 11, color: Pallete.kTextRedColor),
+              kSizedBoxHeight(height: 20),
+              TextFormField(
+                controller: confirmPswd,
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey.shade200,
+                  prefixIcon: Icon(Icons.lock, size: 18),
+                  suffixIcon: Icon(Icons.remove_red_eye_outlined, size: 18),
+                  hintText: 'Confirm password',
+                  hintStyle: TextStyle(
+                      fontSize: 11, fontFamily: Fonts.kMontserratLight),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey.shade300),
                   ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                  contentPadding: const EdgeInsets.all(12),
+                ),
+              ),
+              kSizedBoxHeight(height: 8),
+              RichText(
+                textAlign: TextAlign.left,
+                text: TextSpan(
+                  style: TextStyle(
+                      fontFamily: Fonts.kMontserratNormal,
+                      fontSize: 12,
+                      color: Pallete.kTextBlackColor),
+                  children: [
+                    TextSpan(text: 'By clicking the '),
+                    TextSpan(
+                      text: 'Register',
+                      style: TextStyle(
+                          fontFamily: Fonts.kMontserratNormal,
+                          color: Pallete.kTextRedColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    TextSpan(
+                        text: ' button, you agree to the public offer',
+                        style: TextStyle(
+                          fontFamily: Fonts.kMontserratNormal,
+                        )),
+                  ],
                 ),
               ),
               kSizedBoxHeight(height: 20),
@@ -122,7 +155,7 @@ class LoginScreen extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Login',
+                    'Create Account',
                     style:
                         TextStyle(fontSize: 16, color: Pallete.kTextWhiteColor),
                   ),
@@ -151,16 +184,17 @@ class LoginScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text('Create An Account', style: TextStyle(fontSize: 12)),
+                    Text('I Already Have an Account ',
+                        style: TextStyle(fontSize: 12)),
                     TextButton(
                       onPressed: () {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => SignUpScreen()));
+                                builder: (context) => LoginScreen()));
                       },
                       child: Text(
-                        'Sign Up',
+                        'Login',
                         style: TextStyle(
                             fontSize: 12,
                             color: Pallete.kTextRedColor,
