@@ -17,6 +17,7 @@ class ForgotPswdScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              kSizedBoxHeight(height: 10),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,7 +46,7 @@ class ForgotPswdScreen extends StatelessWidget {
                   prefixIcon: Icon(Icons.mail_rounded, size: 20),
                   hintText: 'Enter your email address',
                   hintStyle: TextStyle(
-                      fontSize: 11, fontFamily: Fonts.kMontserratLight),
+                      fontSize: 13, fontFamily: Fonts.kMontserratLight),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: Colors.grey.shade300),

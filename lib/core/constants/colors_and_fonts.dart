@@ -12,6 +12,10 @@ class Pallete {
   static const Color kTextGreyColor = Colors.grey;
   static const Color kTextBlackColor = Colors.black;
   static const Color kTextWhiteColor = Colors.white;
+
+  // Common colors
+  static const Color kErrorColor = Colors.red;
+  static const Color kSuccessColor = Colors.green;
 }
 
 // Font Families

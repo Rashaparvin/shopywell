@@ -1,9 +1,12 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/core/constants/main_variables.dart';
 import 'package:shopywell/core/strings/image_strings.dart';
+import 'package:shopywell/domain/bloc/login/login_bloc.dart';
 import 'package:shopywell/domain/models/onboarding_model.dart';
+import 'package:shopywell/presentation/login/login_screen.dart';
 import 'package:shopywell/presentation/splash_screen/get_start_screen.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
 
@@ -47,8 +50,7 @@ class OnboardingScreenState extends State<OnboardingScreen> {
         curve: Curves.easeIn,
       );
     } else {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => GetStartScreen()));
+      context.read<LoginBloc>().add(GetLogginedUser());
     }
   }
 
@@ -65,101 +67,113 @@ class OnboardingScreenState extends State<OnboardingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Pallete.kWhiteColor,
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('${currentIndex + 1}/${onboardingPages.length}',
-                    style: TextStyle(
-                        color: Pallete.kTextBlackColor,
-                        fontFamily: Fonts.kMontserratBold)),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => GetStartScreen()));
-                  },
-                  child: Text('Skip',
+      body: BlocListener<LoginBloc, LoginState>(
+        listener: (context, state) {
+          if (state is LoginUserFound) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => GetStartScreen()));
+          } else {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => LoginScreen()));
+          }
+        },
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('${currentIndex + 1}/${onboardingPages.length}',
                       style: TextStyle(
+                          fontSize: 16,
                           color: Pallete.kTextBlackColor,
                           fontFamily: Fonts.kMontserratBold)),
-                ),
-              ],
+                  TextButton(
+                    onPressed: () {
+                      context.read<LoginBloc>().add(GetLogginedUser());
+                    },
+                    child: Text('Skip',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Pallete.kTextBlackColor,
+                            fontFamily: Fonts.kMontserratBold)),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Expanded(
-            child: Stack(
-              children: [
-                PageView.builder(
-                  controller: pageController,
-                  itemCount: onboardingPages.length,
-                  onPageChanged: (index) {
-                    setState(() {
-                      currentIndex = index;
-                    });
-                  },
-                  itemBuilder: (context, index) {
-                    final page = onboardingPages[index];
-                    return OnboardingContent(
-                      image: page.image,
-                      title: page.title,
-                      description: page.description,
-                    );
-                  },
-                ),
-                Positioned(
-                  bottom: 20,
-                  left: 0,
-                  right: 0,
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: SizedBox(
-                      width: Dimensions.screenWidth(context),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                            onPressed: prevPage,
-                            child: Text(currentIndex == 0 ? '' : 'Prev',
-                                style: TextStyle(
-                                    color: Pallete.kTextGreyColor,
-                                    fontFamily: Fonts.kMontserratBold)),
-                          ),
-                          DotsIndicator(
-                            dotsCount: onboardingPages.length,
-                            position: currentIndex.toDouble(),
-                            decorator: DotsDecorator(
-                              activeColor: Pallete.kBlackColor,
-                              size: const Size.square(8.0),
-                              activeSize: const Size(30.0, 8.0),
-                              activeShape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5.0)),
+            Expanded(
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    controller: pageController,
+                    itemCount: onboardingPages.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        currentIndex = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      final page = onboardingPages[index];
+                      return OnboardingContent(
+                        image: page.image,
+                        title: page.title,
+                        description: page.description,
+                      );
+                    },
+                  ),
+                  Positioned(
+                    bottom: 20,
+                    left: 0,
+                    right: 0,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 5, horizontal: 10),
+                      child: SizedBox(
+                        width: Dimensions.screenWidth(context),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            TextButton(
+                              onPressed: prevPage,
+                              child: Text(currentIndex == 0 ? '' : 'Prev',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Pallete.kTextGreyColor,
+                                      fontFamily: Fonts.kMontserratBold)),
                             ),
-                          ),
-                          TextButton(
-                            onPressed: nextPage,
-                            child: Text(
-                                currentIndex == onboardingPages.length - 1
-                                    ? 'Get Started'
-                                    : 'Next',
-                                style: TextStyle(
-                                    color: Pallete.kTextRedColor,
-                                    fontFamily: Fonts.kMontserratBold)),
-                          ),
-                        ],
+                            DotsIndicator(
+                              dotsCount: onboardingPages.length,
+                              position: currentIndex.toDouble(),
+                              decorator: DotsDecorator(
+                                activeColor: Pallete.kBlackColor,
+                                size: const Size.square(8.0),
+                                activeSize: const Size(30.0, 8.0),
+                                activeShape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.0)),
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: nextPage,
+                              child: Text(
+                                  currentIndex == onboardingPages.length - 1
+                                      ? 'Get Started'
+                                      : 'Next',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Pallete.kTextRedColor,
+                                      fontFamily: Fonts.kMontserratBold)),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -179,7 +193,7 @@ class OnboardingContent extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Image.asset(image, height: Dimensions.screenHeight(context) * 0.8),
+        Image.asset(image, height: Dimensions.screenHeight(context) * 0.4),
         kSizedBoxHeight(height: 20),
         Text(title,
             style: TextStyle(
