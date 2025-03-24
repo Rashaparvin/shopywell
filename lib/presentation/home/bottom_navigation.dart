@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/core/constants/main_variables.dart';
+import 'package:shopywell/presentation/home/cart_screen.dart';
 import 'package:shopywell/presentation/home/home.dart';
 import 'package:shopywell/presentation/home/wishlist.dart';
 
@@ -16,11 +17,18 @@ class BottonNavigationWithScreenState
     extends State<BottonNavigationWithScreen> {
   int _selectedIndex = 0;
   bool cartActive = false;
-  List screens = [HomeScreen(), Wishlist()];
+  List screens = [
+    HomeScreen(),
+    Wishlist(),
+    CartScreen(),
+    SizedBox(),
+    SizedBox(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      cartActive = false;
     });
   }
 
@@ -48,6 +56,7 @@ class BottonNavigationWithScreenState
                     icon: Icon(Icons.home_outlined), label: 'Home'),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.favorite_border), label: 'Wishlist'),
+                BottomNavigationBarItem(icon: SizedBox(width: 30), label: ''),
                 BottomNavigationBarItem(
                     icon: Icon(Icons.search), label: 'Search'),
                 BottomNavigationBarItem(
@@ -62,6 +71,9 @@ class BottonNavigationWithScreenState
               child: GestureDetector(
                 onTap: () {
                   cartActive = true;
+                  setState(() {
+                    _selectedIndex = 2;
+                  });
                 },
                 child: Container(
                   width: 60,

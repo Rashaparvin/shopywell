@@ -6,6 +6,7 @@ import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/core/constants/main_variables.dart';
 import 'package:shopywell/core/strings/image_strings.dart';
 import 'package:shopywell/domain/bloc/product/product_bloc.dart';
+import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
 import 'package:shopywell/domain/models/product/product_detail_model.dart';
 import 'package:shopywell/presentation/home/widgets/search_bar_filter.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     context.read<ProductBloc>().add(FetchProducts());
+    context.read<WishlistBloc>().add(FetchWishlistProducts());
   }
 
   @override
@@ -545,21 +547,34 @@ class BuildProductCard extends StatelessWidget {
                       height: 120, width: double.infinity),
                 ),
                 Positioned(
-                    top: 5,
-                    right: 10,
-                    child: GestureDetector(
-                      onTap: () {
-                        context
-                            .read<ProductBloc>()
-                            .add(ToggleFavorite(productId: product.id));
-                      },
-                      child: Icon(
-                        product.selectedToWish
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        color: Colors.amber,
-                      ),
-                    ))
+                  top: 5,
+                  right: 10,
+                  child: BlocBuilder<WishlistBloc, WishlistState>(
+                    builder: (context, state) {
+                      final isWishlisted = state is WishlistLoaded &&
+                          state.wishlist.any((p) => p.id == product.id);
+
+                      return GestureDetector(
+                        onTap: () {
+                          if (isWishlisted) {
+                            context
+                                .read<WishlistBloc>()
+                                .add(RemoveFromWishlist(productId: product.id));
+                          } else {
+                            context.read<WishlistBloc>().add(AddToWishlist(
+                                product:
+                                    product.copyWith(selectedToWish: true)));
+                          }
+                        },
+                        child: Icon(
+                            isWishlisted
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: Colors.amber),
+                      );
+                    },
+                  ),
+                )
               ],
             ),
             Padding(

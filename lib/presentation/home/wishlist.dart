@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/core/constants/main_variables.dart';
 import 'package:shopywell/core/strings/image_strings.dart';
-import 'package:shopywell/domain/bloc/product/product_bloc.dart';
+import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
+import 'package:shopywell/presentation/home/cart_screen.dart';
 import 'package:shopywell/presentation/home/widgets/search_bar_filter.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
 
@@ -42,10 +44,10 @@ class Wishlist extends StatelessWidget {
         centerTitle: true,
       ),
       drawer: Drawer(),
-      body: BlocBuilder<ProductBloc, ProductState>(
+      body: BlocBuilder<WishlistBloc, WishlistState>(
         builder: (context, state) {
-          if (state is ProductLoaded) {
-            final products = state.products;
+          if (state is WishlistLoaded) {
+            final products = state.wishlist;
             return SingleChildScrollView(
               child: Column(
                 children: [
@@ -68,7 +70,13 @@ class Wishlist extends StatelessWidget {
                       itemBuilder: (context, index) {
                         final product = products[index];
                         return GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        CartScreen(product: product)));
+                          },
                           child: Column(
                             children: [
                               Expanded(
@@ -163,7 +171,14 @@ class Wishlist extends StatelessWidget {
               ),
             );
           }
-          return SizedBox.shrink();
+          return Center(
+              child: Text(
+            'Ooops !.. No items in wish list',
+            style: TextStyle(
+                color: Pallete.kRedColor,
+                fontSize: 17,
+                fontWeight: FontWeight.bold),
+          ));
         },
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/domain/bloc/login/login_bloc.dart';
+import 'package:shopywell/domain/bloc/product/product_bloc.dart';
 import 'package:shopywell/domain/bloc/signup/signup_bloc.dart';
 import 'package:shopywell/presentation/home/bottom_navigation.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
@@ -79,6 +80,9 @@ class GetStartScreen extends StatelessWidget {
                               height: 50,
                               child: ElevatedButton(
                                 onPressed: () {
+                                  context
+                                      .read<ProductBloc>()
+                                      .add(FetchProducts());
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(

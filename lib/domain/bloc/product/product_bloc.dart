@@ -8,11 +8,9 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   final ProductRepository productRepository;
+
   ProductBloc(this.productRepository) : super(ProductInitial()) {
     on<FetchProducts>(_fetchProducts);
-    on<AddProductToFirestore>(_addProductToFirestore);
-    // on<FetchProductFromFirestore>(_fetchProductFromFirestore);
-    on<ToggleFavorite>(_toggleFavorite);
   }
 
   Future<void> _fetchProducts(
@@ -24,20 +22,5 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     } catch (e) {
       emit(ProductError(errorMessage: e.toString()));
     }
-  }
-
-  Future<void> _addProductToFirestore(
-      AddProductToFirestore event, Emitter<ProductState> emit) async {}
-
-  Future<void> _toggleFavorite(
-      ToggleFavorite event, Emitter<ProductState> emit) async {
-    final List<ProductDetailModel> updatedProducts =
-        (state as ProductLoaded).products.map((product) {
-      if (product.id == event.productId) {
-        return product.copyWith(selectedToWish: !product.selectedToWish);
-      }
-      return product;
-    }).toList();
-    emit(ProductLoaded(products: updatedProducts));
   }
 }
