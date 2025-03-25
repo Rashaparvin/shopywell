@@ -8,6 +8,7 @@ import 'package:shopywell/core/strings/image_strings.dart';
 import 'package:shopywell/domain/bloc/product/product_bloc.dart';
 import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
 import 'package:shopywell/domain/models/product/product_detail_model.dart';
+import 'package:shopywell/presentation/home/profile.dart';
 import 'package:shopywell/presentation/home/widgets/search_bar_filter.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
 
@@ -46,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: IconButton(
           icon: Icon(Icons.menu, color: Colors.black, size: 30),
           onPressed: () {
-            Scaffold.of(context).openDrawer();
+            // Scaffold.of(context).openDrawer();
           },
         ),
         title: Row(
@@ -61,10 +62,18 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-              backgroundColor: Colors.red[100],
-              radius: 20,
-              child: Image.asset(Images.userIcon),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.red[100],
+                radius: 20,
+                child: Image.asset(Images.userIcon),
+              ),
             ),
           ),
         ],

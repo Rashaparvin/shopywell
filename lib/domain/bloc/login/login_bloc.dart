@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
-import 'package:shopywell/data/db_functions/user_db.dart';
 import 'package:shopywell/data/repository/login_repo/login_repository.dart';
 
 part 'login_event.dart';
@@ -23,7 +22,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       final password = event.password;
       final userAuth = await loginRepo.signInWithEmail(email, password);
       if (userAuth != null) {
-        await UserDb().insertUserToDb(user: userAuth);
         emit(LoginViaEmailSuccess(user: userAuth));
       } else {
         emit(LoginViaEmailFailure(
@@ -40,7 +38,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginInitial());
       final userAuth = await loginRepo.signInWithGoogle();
       if (userAuth != null) {
-        await UserDb().insertUserToDb(user: userAuth);
         emit(LoginViaGoogleSuccess(user: userAuth));
       } else {
         emit(LoginViaGoogleFailure(
@@ -54,9 +51,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<void> _getLogginedUser(
       GetLogginedUser event, Emitter<LoginState> emit) async {
     emit(LoginUserChecking());
-    final userExits = await UserDb().getUser();
-    if (userExits!.uid != '') {
-      emit(LoginUserFound());
+    final user = loginRepo.getCurrentUser();
+    if (user!.email != '') {
+      emit(LoginUserFound(
+        user: user.displayName ?? '',
+        userEmail: user.email ?? '',
+      ));
     }
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shopywell/core/constants/colors_and_fonts.dart';
 import 'package:shopywell/core/constants/main_variables.dart';
 import 'package:shopywell/core/strings/image_strings.dart';
 import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
-import 'package:shopywell/presentation/home/cart_screen.dart';
+import 'package:shopywell/presentation/home/profile.dart';
 import 'package:shopywell/presentation/home/widgets/search_bar_filter.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
 
@@ -34,10 +33,16 @@ class Wishlist extends StatelessWidget {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-              backgroundColor: Colors.red[100],
-              radius: 20,
-              child: Image.asset(Images.userIcon),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Profile()));
+              },
+              child: CircleAvatar(
+                backgroundColor: Colors.red[100],
+                radius: 20,
+                child: Image.asset(Images.userIcon),
+              ),
             ),
           ),
         ],
@@ -69,100 +74,90 @@ class Wishlist extends StatelessWidget {
                       padding: const EdgeInsets.all(0),
                       itemBuilder: (context, index) {
                         final product = products[index];
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CartScreen(product: product)));
-                          },
-                          child: Column(
-                            children: [
-                              Expanded(
-                                  child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: Colors.black12,
-                                        blurRadius: 4,
-                                        spreadRadius: 2),
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: const BorderRadius.vertical(
-                                          top: Radius.circular(15)),
-                                      child: Image.network(
-                                        product.image,
-                                        height: 130,
-                                        width: double.infinity,
-                                      ),
+                        return Column(
+                          children: [
+                            Expanded(
+                                child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(15),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: Colors.black12,
+                                      blurRadius: 4,
+                                      spreadRadius: 2),
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                        top: Radius.circular(15)),
+                                    child: Image.network(
+                                      product.image,
+                                      height: 130,
+                                      width: double.infinity,
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            product.title,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Text(
-                                            product.description,
-                                            style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontSize: 12),
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          const SizedBox(height: 6),
-                                          Text(
-                                            product.price.toString(),
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                          const SizedBox(height: 4),
-                                          Row(
-                                            children: [
-                                              ...List.generate(
-                                                5,
-                                                (index) => Icon(
-                                                  index < product.rating.rate
-                                                      ? Icons.star
-                                                      : Icons.star_border,
-                                                  color: Colors.amber,
-                                                  size: 16,
-                                                ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.title,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          product.description,
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 12),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 6),
+                                        Text(
+                                          product.price.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Row(
+                                          children: [
+                                            ...List.generate(
+                                              5,
+                                              (index) => Icon(
+                                                index < product.rating.rate
+                                                    ? Icons.star
+                                                    : Icons.star_border,
+                                                color: Colors.amber,
+                                                size: 16,
                                               ),
-                                              const SizedBox(width: 5),
-                                              Text(
-                                                product.rating.count.toString(),
-                                                style: const TextStyle(
-                                                    color: Colors.grey,
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                              product.rating.count.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              )),
-                            ],
-                          ),
+                                  ),
+                                ],
+                              ),
+                            )),
+                          ],
                         );
                       },
                     ),
@@ -175,9 +170,7 @@ class Wishlist extends StatelessWidget {
               child: Text(
             'Ooops !.. No items in wish list',
             style: TextStyle(
-                color: Pallete.kRedColor,
-                fontSize: 17,
-                fontWeight: FontWeight.bold),
+                color: Colors.grey, fontSize: 17, fontWeight: FontWeight.bold),
           ));
         },
       ),

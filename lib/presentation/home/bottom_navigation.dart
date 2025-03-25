@@ -35,6 +35,7 @@ class BottonNavigationWithScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: const Color.fromARGB(255, 254, 238, 242),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 15),
           child: SizedBox(

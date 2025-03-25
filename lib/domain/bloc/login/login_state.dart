@@ -29,6 +29,11 @@ final class LoginViaGoogleFailure extends LoginState {
   LoginViaGoogleFailure({required this.errorMessage});
 }
 
-final class LoginUserFound extends LoginState {}
+final class LoginUserFound extends LoginState {
+  final String? user;
+  final String? userEmail;
+
+  LoginUserFound({required this.user, required this.userEmail});
+}
 
 final class LoginUserChecking extends LoginState {}

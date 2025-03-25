@@ -40,4 +40,9 @@ class LoginRepo {
       return null;
     }
   }
+
+  // Get Current User
+  User? getCurrentUser() {
+    return _auth.currentUser;
+  }
 }
