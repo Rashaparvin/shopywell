@@ -45,13 +45,24 @@ class Profile extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: BlocListener<UserProfileBloc, UserProfileState>(
-          listener: (context, state) {
-            if (state is UserDetailsFetched) {
-              email.text = state.user.email ?? '';
-              image = state.user.photoURL ?? Images.userIcon;
+          listener: (context, userProState) {
+            if (userProState is UserDetailsFetched) {
+              email.text = userProState.user.email ?? '';
+              image = userProState.user.photoURL ?? Images.userIcon;
               context
                   .read<UserProfileBloc>()
                   .add(FetchUserProfileDetails(email: email.text));
+            } else if (userProState is UserProfileLoadedSuccess) {
+              pincode.text = userProState.userProfile.pincode;
+              address.text = userProState.userProfile.address;
+              city.text = userProState.userProfile.city;
+              state.text = userProState.userProfile.state;
+              country.text = userProState.userProfile.country;
+              bankAccountNumber.text =
+                  userProState.userProfile.bankAccountNumber;
+              accountHolderName.text =
+                  userProState.userProfile.accountHolderName;
+              ifscCode.text = userProState.userProfile.ifscCode;
             }
           },
           child: Column(
@@ -96,10 +107,36 @@ class Profile extends StatelessWidget {
                     kSizedBoxHeight(height: 10),
                     Column(
                       children: [
-                        BuildTextField(
-                          label: 'Email Address',
-                          controller: email,
-                          obscureText: false,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Email Address',
+                              style: const TextStyle(fontSize: 14),
+                            ),
+                            kSizedBoxHeight(height: 5),
+                            TextFormField(
+                              controller: email,
+                              obscureText: false,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 15),
+                                filled: true,
+                                fillColor: Colors.white,
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.black12),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: Colors.black12),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         kSizedBoxHeight(height: 15),
                         BuildTextField(

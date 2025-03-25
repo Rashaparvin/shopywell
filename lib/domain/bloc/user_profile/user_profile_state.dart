@@ -20,3 +20,11 @@ final class UserProfileAddingFailure extends UserProfileState {
 
   UserProfileAddingFailure({required this.errorMessage});
 }
+
+final class UserProfileLoadedSuccess extends UserProfileState {
+  final UserDetailsModel userProfile;
+
+  UserProfileLoadedSuccess({required this.userProfile});
+}
+
+final class NoUserProfileFound extends UserProfileState {}

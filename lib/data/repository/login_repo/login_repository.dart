@@ -45,4 +45,15 @@ class LoginRepo {
   User? getCurrentUser() {
     return _auth.currentUser;
   }
+
+  // Update Password
+  Future<bool> updatePassword(String newPassword) async {
+    try {
+      await _auth.currentUser?.updatePassword(newPassword);
+      return true;
+    } catch (e) {
+      print("Password Update Error: $e");
+      return false;
+    }
+  }
 }

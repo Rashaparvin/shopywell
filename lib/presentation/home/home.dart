@@ -86,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SearchBarColumnWidget(
               heading: 'All Featured',
             ),
-            kSizedBoxHeight(height: 10),
+            kSizedBoxHeight(height: 15),
 
             // Category Scrollable List
             SizedBox(
@@ -221,7 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 250,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 10,
+                      itemCount: state.products.length,
                       itemBuilder: (context, index) {
                         final product = state.products[index];
                         return BuildProductCard(
@@ -351,7 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 250,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: 10,
+                      itemCount: state.products.length,
                       itemBuilder: (context, index) {
                         final product = state.products[index];
                         return BuildProductCard(

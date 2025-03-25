@@ -18,3 +18,11 @@ final class ProductError extends ProductState {
 
   ProductError({required this.errorMessage});
 }
+
+final class CartProductLoaded extends ProductState {
+  final List<ProductDetailModel> cartProducts;
+
+  CartProductLoaded({required this.cartProducts});
+}
+
+final class CartListEmpty extends ProductState {}

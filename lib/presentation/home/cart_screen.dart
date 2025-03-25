@@ -1,8 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopywell/domain/bloc/product/product_bloc.dart';
 import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
 import 'package:shopywell/presentation/home/bottom_navigation.dart';
+import 'package:shopywell/presentation/home/shopping_cart.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
 
 class CartScreen extends StatefulWidget {
@@ -38,7 +40,12 @@ class _CartScreenState extends State<CartScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.shopping_cart, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ShoppingCartPage()),
+              );
+            },
           ),
         ],
       ),
@@ -65,23 +72,29 @@ class _CartScreenState extends State<CartScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CarouselSlider(
-                          items: imageUrls.map((url) {
-                            return ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: Image.network(
-                                url,
-                                height: 120,
-                                width: double.infinity,
-                                fit: BoxFit.cover,
-                              ),
-                            );
-                          }).toList(),
-                          options: CarouselOptions(
-                            height: 200,
-                            enlargeCenterPage: true,
-                            viewportFraction: 1,
-                            onPageChanged: (index, reason) {},
+                        child: Card(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: CarouselSlider(
+                            items: imageUrls.map((url) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  url,
+                                  height: 120,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            }).toList(),
+                            options: CarouselOptions(
+                              height: 200,
+                              enlargeCenterPage: true,
+                              viewportFraction: 1,
+                              onPageChanged: (index, reason) {},
+                            ),
                           ),
                         ),
                       ),
@@ -219,7 +232,14 @@ class _CartScreenState extends State<CartScreen> {
                         children: [
                           /// **Go to Cart Button**
                           ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              context
+                                  .read<ProductBloc>()
+                                  .add(AddProductToCart(product: product));
+
+                              context.read<WishlistBloc>().add(
+                                  RemoveFromWishlist(productId: product.id));
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
                               shape: RoundedRectangleBorder(
@@ -273,6 +293,7 @@ class _CartScreenState extends State<CartScreen> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'Delivery in ',
@@ -281,6 +302,7 @@ class _CartScreenState extends State<CartScreen> {
                                   Text(
                                     '1 within Hour',
                                     style: TextStyle(
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),

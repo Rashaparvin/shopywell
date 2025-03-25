@@ -1,14 +1,14 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:shopywell/data/repository/product_repo/wishlist_repository.dart';
+import 'package:shopywell/data/repository/fire_store_repo/fire_store_repository.dart';
 import 'package:shopywell/domain/models/product/product_detail_model.dart';
 
 part 'wishlist_event.dart';
 part 'wishlist_state.dart';
 
 class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
-  final WishlistRepository wishlistRepository;
-  WishlistBloc(this.wishlistRepository) : super(WishlistInitial()) {
+  final FireStoreRepository fireStoreRepository;
+  WishlistBloc(this.fireStoreRepository) : super(WishlistInitial()) {
     on<FetchWishlistProducts>(_fetchWishListProducts);
     on<AddToWishlist>(_addToWishlist);
     on<RemoveFromWishlist>(_removeFromWishlist);
@@ -18,7 +18,7 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
       FetchWishlistProducts event, Emitter<WishlistState> emit) async {
     try {
       await emit.onEach(
-        wishlistRepository.getWishlist(),
+        fireStoreRepository.getWishlist(),
         onData: (wishlist) => emit(WishlistLoaded(wishlist: wishlist)),
       );
     } catch (e) {
@@ -28,11 +28,11 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
 
   Future<void> _addToWishlist(
       AddToWishlist event, Emitter<WishlistState> emit) async {
-    await wishlistRepository.addToWishlist(event.product);
+    await fireStoreRepository.addToWishlist(event.product);
   }
 
   Future<void> _removeFromWishlist(
       RemoveFromWishlist event, Emitter<WishlistState> emit) async {
-    await wishlistRepository.removeFromWishlist(event.productId);
+    await fireStoreRepository.removeFromWishlist(event.productId);
   }
 }

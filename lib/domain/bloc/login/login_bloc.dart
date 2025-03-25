@@ -11,6 +11,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this.loginRepo) : super(LoginInitial()) {
     on<LoginViaEmail>(_loginViaEmail);
     on<LoginViaGoogle>(_loginViaGoogle);
+    on<UpdatePassword>(_updatePassword);
     on<GetLogginedUser>(_getLogginedUser);
   }
 
@@ -45,6 +46,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       }
     } catch (e) {
       emit(LoginViaGoogleFailure(errorMessage: e.toString()));
+    }
+  }
+
+  Future<void> _updatePassword(
+      UpdatePassword event, Emitter<LoginState> emit) async {
+    try {
+      bool success = await loginRepo.updatePassword(event.newPassword);
+      if (success == true) {
+        emit(PasswordUpdated());
+      } else {
+        emit(PasswordUpdateError());
+      }
+    } catch (e) {
+      print(e);
+      emit(PasswordUpdateError());
     }
   }
 

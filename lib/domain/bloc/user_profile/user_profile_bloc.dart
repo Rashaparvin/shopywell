@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:meta/meta.dart';
-import 'package:shopywell/data/repository/fire_store_repo/userdata_repository.dart';
+import 'package:shopywell/data/repository/fire_store_repo/fire_store_repository.dart';
 import 'package:shopywell/data/repository/login_repo/login_repository.dart';
 import 'package:shopywell/domain/models/user_model/user_details_modl.dart';
 
@@ -10,8 +10,8 @@ part 'user_profile_state.dart';
 
 class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
   final LoginRepo loginRepo;
-  final UserdataRepository userdataRepository;
-  UserProfileBloc(this.loginRepo, this.userdataRepository)
+  final FireStoreRepository fireStoreRepository;
+  UserProfileBloc(this.loginRepo, this.fireStoreRepository)
       : super(UserProfileInitial()) {
     on<FetchUserDetails>(_fetchUserDetails);
     on<AddUserProfile>(_addUserProfile);
@@ -31,7 +31,7 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       AddUserProfile event, Emitter<UserProfileState> emit) async {
     try {
       final userProfileData = event.userData;
-      await userdataRepository.addUserProfile(userProfileData);
+      await fireStoreRepository.addUserProfile(userProfileData);
       emit(UserProfileAddedSuccess());
     } catch (e) {
       print(e);
@@ -43,8 +43,12 @@ class UserProfileBloc extends Bloc<UserProfileEvent, UserProfileState> {
       FetchUserProfileDetails event, Emitter<UserProfileState> emit) async {
     try {
       final email = event.email;
-      UserDetailsModel? user = await userdataRepository.getUserProfile(email);
-      if (user != null) {}
+      UserDetailsModel? user = await fireStoreRepository.getUserProfile(email);
+      if (user != null) {
+        emit(UserProfileLoadedSuccess(userProfile: user));
+      } else {
+        emit(NoUserProfileFound());
+      }
     } catch (e) {
       print(e);
     }
