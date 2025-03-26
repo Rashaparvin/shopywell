@@ -11,8 +11,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc(this.loginRepo) : super(LoginInitial()) {
     on<LoginViaEmail>(_loginViaEmail);
     on<LoginViaGoogle>(_loginViaGoogle);
-    on<UpdatePassword>(_updatePassword);
+    on<ForgotPassword>(_forgotPassword);
     on<GetLogginedUser>(_getLogginedUser);
+    on<LogoutRequested>(_logoutRequested);
   }
 
   Future<void> _loginViaEmail(
@@ -49,18 +50,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     }
   }
 
-  Future<void> _updatePassword(
-      UpdatePassword event, Emitter<LoginState> emit) async {
+  Future<void> _forgotPassword(
+      ForgotPassword event, Emitter<LoginState> emit) async {
     try {
-      bool success = await loginRepo.updatePassword(event.newPassword);
+      bool success = await loginRepo.sendPasswordResetEmail(event.email);
       if (success == true) {
-        emit(PasswordUpdated());
-      } else {
-        emit(PasswordUpdateError());
+        emit(PasswordResetMailSent());
       }
     } catch (e) {
       print(e);
-      emit(PasswordUpdateError());
     }
   }
 
@@ -74,5 +72,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         userEmail: user.email ?? '',
       ));
     }
+  }
+
+  Future<void> _logoutRequested(
+      LogoutRequested event, Emitter<LoginState> emit) async {
+    await loginRepo.signOut();
+    emit(LogoutSuccess());
   }
 }

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopywell/domain/models/product/product_detail_model.dart';
 import 'package:shopywell/domain/models/user_model/user_details_modl.dart';
 
@@ -29,7 +30,11 @@ class FireStoreRepository {
 
   // Add product to wishlist
   Future<void> addToWishlist(ProductDetailModel product) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
     await _firestore
+        .collection('users')
+        .doc(userId)
         .collection('wishlist')
         .doc(product.id.toString())
         .set(product.toMap());
@@ -37,12 +42,26 @@ class FireStoreRepository {
 
   // Remove product on wishlist
   Future<void> removeFromWishlist(int productId) async {
-    await _firestore.collection('wishlist').doc(productId.toString()).delete();
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('wishlist')
+        .doc(productId.toString())
+        .delete();
   }
 
   // Fetch product from wishlist
   Stream<List<ProductDetailModel>> getWishlist() {
-    return _firestore.collection('wishlist').snapshots().map((snapshot) {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('wishlist')
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs
           .map((doc) => ProductDetailModel.fromMap(doc.data()))
           .toList();
@@ -51,16 +70,26 @@ class FireStoreRepository {
 
   // Add product to cartlist
   Future<void> addToCart(ProductDetailModel product) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
     await _firestore
-        .collection('cartlist')
+        .collection('users')
+        .doc(userId)
+        .collection('cart')
         .doc(product.id.toString())
         .set(product.toMap());
   }
 
   // Fetch product from wishlist
   Future<List<ProductDetailModel>> getCartProductList() async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
     try {
-      QuerySnapshot snapshot = await _firestore.collection('cartlist').get();
+      QuerySnapshot snapshot = await _firestore
+          .collection('users')
+          .doc(userId)
+          .collection('cart')
+          .get();
 
       return snapshot.docs
           .map((doc) =>

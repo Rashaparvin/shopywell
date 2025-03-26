@@ -46,14 +46,19 @@ class LoginRepo {
     return _auth.currentUser;
   }
 
-  // Update Password
-  Future<bool> updatePassword(String newPassword) async {
+  // Send password reset email
+  Future<bool> sendPasswordResetEmail(String email) async {
     try {
-      await _auth.currentUser?.updatePassword(newPassword);
+      await _auth.sendPasswordResetEmail(email: email);
       return true;
     } catch (e) {
-      print("Password Update Error: $e");
+      print("Password Reset Error: $e");
       return false;
     }
+  }
+
+  // Logout
+  Future<void> signOut() {
+    return _auth.signOut();
   }
 }

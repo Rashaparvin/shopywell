@@ -14,8 +14,10 @@ final class LoginViaGoogle extends LoginEvent {}
 
 final class GetLogginedUser extends LoginEvent {}
 
-final class UpdatePassword extends LoginEvent {
-  final String newPassword;
+final class ForgotPassword extends LoginEvent {
+  final String email;
 
-  UpdatePassword({required this.newPassword});
+  ForgotPassword({required this.email});
 }
+
+final class LogoutRequested extends LoginEvent {}

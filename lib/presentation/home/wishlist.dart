@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopywell/core/constants/main_variables.dart';
 import 'package:shopywell/core/strings/image_strings.dart';
 import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
+import 'package:shopywell/presentation/home/drawer.dart';
 import 'package:shopywell/presentation/home/profile.dart';
 import 'package:shopywell/presentation/home/widgets/search_bar_filter.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
@@ -15,12 +16,14 @@ class Wishlist extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.black, size: 30),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
-          },
-        ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu, color: Colors.black, size: 30),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -48,7 +51,7 @@ class Wishlist extends StatelessWidget {
         ],
         centerTitle: true,
       ),
-      drawer: Drawer(),
+      drawer: MyDrawer(),
       body: BlocBuilder<WishlistBloc, WishlistState>(
         builder: (context, state) {
           if (state is WishlistLoaded) {

@@ -16,3 +16,5 @@ final class WishlistLoaded extends WishlistState {
 
   WishlistLoaded({required this.wishlist});
 }
+
+final class WishlistEmpty extends WishlistState {}

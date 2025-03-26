@@ -19,7 +19,13 @@ class WishlistBloc extends Bloc<WishlistEvent, WishlistState> {
     try {
       await emit.onEach(
         fireStoreRepository.getWishlist(),
-        onData: (wishlist) => emit(WishlistLoaded(wishlist: wishlist)),
+        onData: (wishlist) {
+          if (wishlist.isEmpty) {
+            emit(WishlistEmpty());
+          } else {
+            emit(WishlistLoaded(wishlist: wishlist));
+          }
+        },
       );
     } catch (e) {
       emit(WishlistError(errorMessage: e.toString()));

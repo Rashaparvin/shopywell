@@ -8,6 +8,7 @@ import 'package:shopywell/core/strings/image_strings.dart';
 import 'package:shopywell/domain/bloc/product/product_bloc.dart';
 import 'package:shopywell/domain/bloc/wish_list/wishlist_bloc.dart';
 import 'package:shopywell/domain/models/product/product_detail_model.dart';
+import 'package:shopywell/presentation/home/drawer.dart';
 import 'package:shopywell/presentation/home/profile.dart';
 import 'package:shopywell/presentation/home/widgets/search_bar_filter.dart';
 import 'package:shopywell/presentation/widgets/sizedbox_widget.dart';
@@ -44,12 +45,14 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.menu, color: Colors.black, size: 30),
-          onPressed: () {
-            // Scaffold.of(context).openDrawer();
-          },
-        ),
+        leading: Builder(builder: (context) {
+          return IconButton(
+            icon: Icon(Icons.menu, color: Colors.black, size: 30),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          );
+        }),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -79,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         centerTitle: true,
       ),
-      drawer: Drawer(),
+      drawer: MyDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [

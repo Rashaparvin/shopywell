@@ -29,9 +29,7 @@ final class LoginViaGoogleFailure extends LoginState {
   LoginViaGoogleFailure({required this.errorMessage});
 }
 
-final class PasswordUpdated extends LoginState {}
-
-final class PasswordUpdateError extends LoginState {}
+final class PasswordResetMailSent extends LoginState {}
 
 final class LoginUserFound extends LoginState {
   final String? user;
@@ -41,3 +39,5 @@ final class LoginUserFound extends LoginState {
 }
 
 final class LoginUserChecking extends LoginState {}
+
+final class LogoutSuccess extends LoginState {}
