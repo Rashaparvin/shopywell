@@ -12,3 +12,9 @@ final class AddProductToCart extends ProductEvent {
 }
 
 final class FetchCartProducts extends ProductEvent {}
+
+final class RemoveFromCart extends ProductEvent {
+  final int productId;
+
+  RemoveFromCart({required this.productId});
+}

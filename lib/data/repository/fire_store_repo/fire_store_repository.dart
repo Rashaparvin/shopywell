@@ -100,4 +100,16 @@ class FireStoreRepository {
       return [];
     }
   }
+
+  // Remove product on wishlist
+  Future<void> removeFromCart(int productId) async {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+    await _firestore
+        .collection('users')
+        .doc(userId)
+        .collection('cart')
+        .doc(productId.toString())
+        .delete();
+  }
 }

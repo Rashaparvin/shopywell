@@ -260,7 +260,14 @@ class _CartScreenState extends State<CartScreen> {
 
                           /// **Buy Now Button**
                           ElevatedButton.icon(
-                            onPressed: () {},
+                            onPressed: () {
+                              context
+                                  .read<ProductBloc>()
+                                  .add(AddProductToCart(product: product));
+
+                              context.read<WishlistBloc>().add(
+                                  RemoveFromWishlist(productId: product.id));
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.green,
                               shape: RoundedRectangleBorder(

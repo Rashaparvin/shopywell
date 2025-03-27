@@ -17,6 +17,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     on<FetchProducts>(_fetchProducts);
     on<AddProductToCart>(_addProductToCart);
     on<FetchCartProducts>(_fetchCartProducts);
+    on<RemoveFromCart>(_removeFromCart);
   }
 
   Future<void> _fetchProducts(
@@ -43,5 +44,10 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     } else {
       emit(CartListEmpty());
     }
+  }
+
+  Future<void> _removeFromCart(
+      RemoveFromCart event, Emitter<ProductState> emit) async {
+    await fireStoreRepository.removeFromCart(event.productId);
   }
 }
