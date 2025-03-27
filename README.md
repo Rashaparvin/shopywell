@@ -20,7 +20,7 @@ A eCommerce app built with Flutter, powered by Firebase, managed using BLoC stat
   ┃ ┣ 📜 main.dart        # Entry Point  
 
 # Installation & Setup
-  * Download the APK file from [provide link].
+  * Download the APK file from the link(https://drive.google.com/file/d/1LBW6H9ZjmZ4h4MuQ6xNveLVqxcmzugfV/view?usp=sharing).
   * Install the APK on your Android device.
   * Open the app and start! 
 
@@ -40,7 +40,9 @@ A eCommerce app built with Flutter, powered by Firebase, managed using BLoC stat
   * Checkout & Payment 
     * Review your cart and proceed to payment.
     * Update your profile details if needed. 
-    * Complete the payment using Stripe (Use card number as '4242 4242 4242 4242' for test purpose) , and enjoy seamless shopping! 
+    * Complete the payment using Stripe (Use card number as '4242 4242 4242 4242' for test purpose) , and enjoy seamless shopping!
+
+  * Logout ( available on drawer), if needed
 
 
 
